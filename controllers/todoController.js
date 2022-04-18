@@ -52,14 +52,20 @@ exports.add = async (req, res) => {
 
 exports.delete = async (req, res) => {
   const id = req.params.id;
+  await TodoModel.findAll({ where: { 'id': id } }).then(data => {
+    if (data[0].dataValues.image && data[0].dataValues.image != '') {
+      const folderDest = `D:/Maestria/todo-app-microservice/todo-app-frontend/src/assets`;
+      const newpath = `${folderDest}/${data[0].dataValues.image}`;
+      try {
+        fs.unlinkSync(newpath);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  });;
+
+
   await TodoModel.destroy({ where: { id: id } });
-  const imagePath = path.join(__dirname.replace('controllers', ''), '/public/uploads/');
-  newpath = imagePath + id + ".jpg";
-  try {
-    fs.unlinkSync(newpath);
-  } catch (err) {
-    console.error(err);
-  }
   res.send({});
 };
 
