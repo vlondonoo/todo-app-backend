@@ -1,6 +1,5 @@
 
 module.exports = (sequelize, type) => {
-  console.log("valoressss", type)
   return sequelize.define('todo', {
     id: {
       type: type.INTEGER,
