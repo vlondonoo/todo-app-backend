@@ -6,5 +6,6 @@ module.exports = {
     USERNAME: process.env.USER,
     PASSWORD: process.env.PASSWORD,
     HOST: process.env.HOST,
-    DIALECT: process.env.DIALECT
+    DIALECT: process.env.DIALECT,
+    IMAGE_FOLDER_PATH: process.env.IMAGE_FOLDER_PATH
 };

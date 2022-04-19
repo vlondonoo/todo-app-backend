@@ -1,6 +1,6 @@
 const { TodoModel } = require('../db/sequelize');
 const fs = require('fs');
-const path = require('path');
+const { IMAGE_FOLDER_PATH } = require('../constants');
 
 exports.list = async function (req, res) {
   const todos = await TodoModel.findAll();
@@ -31,12 +31,11 @@ exports.listOrderedClosed = async function (req, res) {
   res.send({ "list": todos });
 }
 exports.add = async (req, res) => {
-  const folderDest = `D:/Maestria/todo-app-microservice/todo-app-frontend/src/assets`;
   let imageName;
 
   if (req.files && req.files.file && req.files.file.name) {
     imageName = `${Date.now()}_${req.files.file.name}`;
-    const newpath = `${folderDest}/${imageName}`;
+    const newpath = `${IMAGE_FOLDER_PATH}/${imageName}`;
     fs.writeFileSync(newpath, req.files.file.data);
   } else {
     imageName = '';
@@ -54,8 +53,7 @@ exports.delete = async (req, res) => {
   const id = req.params.id;
   await TodoModel.findAll({ where: { 'id': id } }).then(data => {
     if (data[0].dataValues.image && data[0].dataValues.image != '') {
-      const folderDest = `D:/Maestria/todo-app-microservice/todo-app-frontend/src/assets`;
-      const newpath = `${folderDest}/${data[0].dataValues.image}`;
+      const newpath = `${IMAGE_FOLDER_PATH}/${data[0].dataValues.image}`;
       try {
         fs.unlinkSync(newpath);
       } catch (err) {
